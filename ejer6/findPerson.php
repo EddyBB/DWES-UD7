@@ -9,7 +9,7 @@ $wsdl = 'https://www.crcind.com/csp/samples/SOAP.Demo.CLS?WSDL';
 if (isset($_POST['enviar'])) {
 
     $params = Array(
-        "Arg1" => $_POST["nombre"]
+        "id" => $_POST["nombre"]
     );
 
     $options = Array(
@@ -31,6 +31,7 @@ if (isset($_POST['enviar'])) {
 
         // Si los parámetros son correctos, llamamos a la función letra de calcularLetra.php
         $resultado = $cliente->FindPerson($params);
+        var_dump($resultado);
     } else {
         $error = "<strong>Error:</strong> Debes introducir un numero mayor a 0<br/><br/>Ej: 45678987";
     }
@@ -51,7 +52,7 @@ if (isset($_POST['enviar'])) {
     <h2>Servicio Web + PHP + SOAP Demo cls</h2>
     <form action="findPerson.php" method="post">
         <?php
-        print "<input type='text' name='nombre'>";
+        print "<input type='number' name='nombre'>";
 
         print "<input type='submit' name='enviar' value='Buscar'>";
         print "<p class='error'>$error</p>";
