@@ -9,7 +9,7 @@ $wsdl = 'https://www.crcind.com/csp/samples/SOAP.Demo.CLS?WSDL';
 if (isset($_POST['enviar'])) {
 
     $params = Array(
-        "id" => $_POST["id"]
+        "name" => $_POST["name"]
     );
 
     $options = Array(
@@ -27,13 +27,13 @@ if (isset($_POST['enviar'])) {
     $cliente = new SoapClient($wsdl, $options);
 
     // Establecemos los parámetros de envío
-    if (!empty($_POST['id'])) {
+    if (!empty($_POST['name'])) {
 
         // Si los parámetros son correctos, llamamos a la función letra de calcularLetra.php
-        $resultado = $cliente->FindPerson($params);
+        $resultado = $cliente->GetDataSetByName($params);
         
     } else {
-        $error = "<strong>Error:</strong> Debes introducir un numero mayor a 0<br/><br/>Ej: 45678987";
+        $error = "<strong>Error:</strong> Debes introducir un nombre que esté en el find person<br/><br/>Ej: 45678987";
     }
 }
 
@@ -43,43 +43,28 @@ if (isset($_POST['enviar'])) {
 <html>
 
 <head>
-    <title>Buscar Persona - Servicio Web + PHP + SOAP</title>
+    <title>Get Data Set By Name - Servicio Web + PHP + SOAP</title>
     <link rel="stylesheet" type="text/css" href="/estilo.css">
 </head>
 
 <body>
-    <h1>Find Person</h1>
+    <h1>Get Data Set By Name</h1>
     <h2>Servicio Web + PHP + SOAP Demo cls</h2>
-    <form action="findPerson.php" method="post">
+    <form action="getDataSetByName.php" method="post">
         <?php
-        print "<input type='number' name='id'>";
+        print "<input type='text' name='name'>";
 
         print "<input type='submit' name='enviar' value='Buscar'>";
         print "<p class='error'>$error</p>";
         //print "<p style='font-size: 12pt;font-weight: bold;color: #0066CC;'>$resultado</p>";
 
         if(isset($_POST['enviar'])){
-            foreach($resultado as $persona){
-                echo $persona->Name . "<br>";
-                echo $persona->SSN . "<br>";
-                echo $persona->DOB . "<br>";
+            foreach($resultado->GetDataSetByNameResult as $persona){
+                echo $persona . "<br>";
 
-                echo "Home: ";
-                echo $persona->Home->Street . "<br>";
-                echo $persona->Home->City . "<br>";
-                echo $persona->Home->State . "<br>";
-                echo $persona->Home->Zip . "<br>";
-
-                echo "Office: ";
-                echo $persona->Office->Street . "<br>";
-                echo $persona->Office->City . "<br>";
-                echo $persona->Office->State . "<br>";
-                echo $persona->Office->Zip . "<br>";
-
-                echo "Color: ";
-                echo $persona->FavoriteColors->FavoriteColorsItem . "<br>";
             }
         }
+        
         ?>
     </form>
     <div id="footer">Creado con <span class="red">♥</span> por: <a href="https://www.raulprietofernandez.net/">Eddy</a></div>
